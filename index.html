@@ -57,7 +57,7 @@ input{width:100%;margin-top:9px;background:#0f0f12;border:1px solid #36363d;colo
 <script>
 const v=document.getElementById('video'), status=document.getElementById('status'), effect=document.getElementById('effect'), phrase=document.getElementById('phrase'), custom=document.getElementById('custom'), crack=document.getElementById('crack'), download=document.getElementById('download');
 let fx='hat',player='A',round=1,A=0,
-async function start(){try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1080},height:{ideal:1920}},audio:true});v.srcObject=stream;status.textContent='Camera ready. Make them laugh.'}catch(e){status.textContent='Camera/mic permission needed for the full demo.'}}
+async function start(){try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1080},height:{ideal:1920}},audio:true});v.srcObject=stream;await v.play();v.style.display='block';status.textContent='Camera ready. Make them laugh.'}catch(e){status.textContent='Camera/mic permission needed for the full demo.'}}
 
 document.querySelectorAll('.chip').forEach(x=>x.onclick=()=>{document.querySelectorAll('.chip').forEach(y=>y.classList.remove('on'));x.classList.add('on');fx=x.dataset.fx;phrase.textContent=x.dataset.t;custom.value=''});
 custom.oninput=()=>{if(custom.value.trim()) phrase.textContent=custom.value.trim()};
