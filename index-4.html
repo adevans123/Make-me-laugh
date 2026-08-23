@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08080a">
+<title>Make Me Laugh — V3</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#070709;color:#fff;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:480px;margin:auto;padding:12px 12px 26px}.head{display:flex;justify-content:space-between;align-items:center;padding:4px 1px 11px}
+.logo{font-weight:1000;font-size:23px;letter-spacing:-1px}.logo i{color:#ff315b;font-style:normal}.badge{font-size:10px;font-weight:900;border:1px solid #36363c;padding:7px 9px;border-radius:99px}
+.cam{position:relative;aspect-ratio:9/16;background:#121216;border-radius:25px;overflow:hidden;box-shadow:0 20px 65px #000}
+video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);background:#17171c}.shade{position:absolute;inset:0;background:linear-gradient(#0009,transparent 24%,transparent 67%,#000d)}
+.bar{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between}.pill{background:#000a;border:1px solid #fff2;border-radius:99px;padding:7px 10px;font-size:11px;font-weight:900}
+.turn{position:absolute;top:53px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#000b;border-radius:99px;padding:8px 13px;font-size:12px;font-weight:950}
+.words{position:absolute;left:15px;right:15px;bottom:81px;text-align:center;font-weight:1000;font-size:22px;line-height:1.03;text-shadow:0 3px 13px #000}.words small{display:block;color:#ddd;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:5px}
+.effect{position:absolute;inset:0;display:none;pointer-events:none}.fx{position:absolute;filter:drop-shadow(0 5px 5px #000b);font-family:"Apple Color Emoji","Segoe UI Emoji",sans-serif}
+.hat{font-size:86px;top:17%;left:50%;transform:translateX(-50%) rotate(-7deg)}.moustache{font-size:82px;top:47%;left:50%;transform:translateX(-50%)}.ears{font-size:100px;top:33%;left:1%}.ears.r{left:auto;right:1%}.beard{font-size:105px;top:49%;left:50%;transform:translateX(-50%)}.hair{font-size:105px;top:12%;left:50%;transform:translateX(-50%)}.old{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 17%,#eee5 18%,transparent 34%),linear-gradient(#aaa2,#5554);mix-blend-mode:screen}
+.crack{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#ff315b33;font-size:55px;font-weight:1000;text-align:center;text-shadow:0 5px 14px #000}.live{position:absolute;right:12px;bottom:12px;background:#ff315b;border-radius:8px;padding:7px 9px;font-size:10px;font-weight:1000}
+.panel{margin-top:11px;background:#141418;border:1px solid #29292f;border-radius:20px;padding:12px}.lab{font-size:10px;color:#aaaab3;letter-spacing:1px;text-transform:uppercase;font-weight:900;margin-bottom:8px}
+.chips{display:flex;gap:7px;overflow:auto;padding-bottom:3px}.chip{border:1px solid #393940;background:#222229;color:#fff;border-radius:12px;padding:10px 11px;font-weight:900;white-space:nowrap}.chip.on{border-color:transparent;background:linear-gradient(135deg,#ff315b,#7c3aed)}
+input{width:100%;margin-top:9px;background:#0f0f12;border:1px solid #36363d;color:#fff;border-radius:12px;padding:12px;font-size:14px;outline:none}.row{display:flex;gap:7px;margin-top:8px}.btn{flex:1;border:0;border-radius:13px;color:#fff;padding:13px 7px;font-weight:1000}.go{background:#ff315b}.say{background:#2b2b31}.swap{background:#38383f}.record{background:#24242a}.status{text-align:center;color:#bcbcc5;font-size:11px;min-height:18px;margin-top:8px}
+.card{margin-top:11px;background:#141418;border:1px solid #29292f;border-radius:18px;padding:14px}.card strong{display:block;margin-bottom:4px}.card span{font-size:12px;color:#aaaab2;line-height:1.4}
+.download{display:none;margin-top:8px;width:100%;text-align:center;text-decoration:none;background:#fff;color:#111;border-radius:12px;padding:12px;font-weight:950}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="head"><div class="logo">MAKE ME <i>LAUGH</i> 😂</div><div class="badge">V3 · LIVE CAMERA</div></div>
+<div class="cam">
+<video id="video" autoplay muted playsinline></video><div class="shade"></div>
+<div class="bar"><div class="pill">ROUND <span id="round">1</span></div><div class="pill">A <span id="a">0</span> · B <span id="b">0</span></div></div>
+<div class="turn" id="turn">A'S TURN — MAKE B LAUGH</div>
+<div class="words"><small>AI TRANSFORMATION</small><span id="phrase">Give them a huge moustache</span></div>
+<div class="effect" id="effect"><div class="fx hat" data-fx="hat">🎩</div><div class="fx moustache" data-fx="moustache">🥸</div><div class="fx ears" data-fx="ears">👂</div><div class="fx ears r" data-fx="ears">👂</div><div class="fx beard" data-fx="beard">🧔</div><div class="fx hair" data-fx="hair">🦱</div><div class="old" data-fx="old"></div></div>
+<div class="crack" id="crack">😂<br>YOU CRACKED!</div><div class="live">AI EFFECT</div>
+</div>
+<div class="panel">
+<div class="lab">What do you want to do to them?</div>
+<div class="chips">
+<button class="chip on" data-fx="moustache" data-t="Give them a huge moustache">🥸 Moustache</button>
+<button class="chip" data-fx="hat" data-t="Put a ridiculous red hat on them">🎩 Red hat</button>
+<button class="chip" data-fx="ears" data-t="Give them massive ears">👂 Big ears</button>
+<button class="chip" data-fx="beard" data-t="Give them a huge beard">🧔 Beard</button>
+<button class="chip" data-fx="hair" data-t="Give them ridiculous hair">🦱 Hair</button>
+<button class="chip" data-fx="old" data-t="Make them 80 years old">👴 Old</button>
+</div>
+<input id="custom" placeholder='Or type: "Give Dad a massive beard"'>
+<div class="row"><button class="btn go" id="transform">✨ TRANSFORM</button><button class="btn say" id="voice">🎙️ SAY IT</button><button class="btn swap" id="swap">↔ SWAP</button></div>
+<div class="row"><button class="btn record" id="record">⏺ RECORD BATTLE</button><button class="btn record" id="laugh">😂 THEY LAUGHED</button></div>
+<div class="status" id="status">Starting camera…</div><a class="download" id="download">Save battle video</a>
+</div>
+<div class="card"><strong>FIRST PERSON TO LAUGH LOSES</strong><span>This V3 uses the real phone camera, voice input, effects, turn/score logic and battle recording. The final production build replaces the demo effects with real-time face-tracked AR/AI and automatic expression-based laugh detection.</span></div>
+</div>
+<script>
+const v=document.getElementById('video'), status=document.getElementById('status'), effect=document.getElementById('effect'), phrase=document.getElementById('phrase'), custom=document.getElementById('custom'), crack=document.getElementById('crack'), download=document.getElementById('download');
+let fx='moustache',player='A',round=1,A=0,B=0,rec=null,chunks=[],stream=null,audioCtx=null,analyser=null;
+async function start(){try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1080},height:{ideal:1920}},audio:true});v.srcObject=stream;status.textContent='Camera ready. Make them laugh.'}catch(e){status.textContent='Camera/mic permission needed for the full demo.'}}
+start();
+document.querySelectorAll('.chip').forEach(x=>x.onclick=()=>{document.querySelectorAll('.chip').forEach(y=>y.classList.remove('on'));x.classList.add('on');fx=x.dataset.fx;phrase.textContent=x.dataset.t;custom.value=''});
+custom.oninput=()=>{if(custom.value.trim()) phrase.textContent=custom.value.trim()};
+function chooseFromText(t){t=t.toLowerCase(); if(t.includes('moust')||t.includes('mustache'))return'moustache';if(t.includes('hat'))return'hat';if(t.includes('ear'))return'ears';if(t.includes('beard'))return'beard';if(t.includes('hair')||t.includes('mohawk'))return'hair';if(t.includes('old')||t.includes('90')||t.includes('80'))return'old';return fx}
+function transform(){if(custom.value.trim()){phrase.textContent=custom.value.trim();fx=chooseFromText(custom.value)}effect.style.display='block';effect.querySelectorAll('[data-fx]').forEach(x=>x.style.display='none');effect.querySelectorAll('[data-fx="'+fx+'"]').forEach(x=>x.style.display='block');status.textContent='✨ Transformation applied — DON’T LAUGH!'}
+document.getElementById('transform').onclick=transform;
+document.getElementById('voice').onclick=()=>{const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){status.textContent='Voice input is not supported in this browser.';return}status.textContent='🎙️ Listening…';let r=new R();r.lang='en-GB';r.onresult=e=>{let t=e.results[0][0].transcript;custom.value=t;phrase.textContent=t;fx=chooseFromText(t);setTimeout(transform,250)};r.onerror=()=>status.textContent='Try saying it again.';r.start()};
+function swap(){player=player==='A'?'B':'A';round++;document.getElementById('round').textContent=round;document.getElementById('turn').textContent=player+"'S TURN — MAKE "+(player==='A'?'B':'A')+" LAUGH";effect.style.display='none';crack.style.display='none';status.textContent='New round. Your turn!'}
+document.getElementById('swap').onclick=swap;
+document.getElementById('laugh').onclick=()=>{crack.style.display='flex';if(player==='A'){A++;document.getElementById('a').textContent=A}else{B++;document.getElementById('b').textContent=B}status.textContent='😂 Point awarded — swap turns!';setTimeout(swap,1000)};
+document.getElementById('record').onclick=async()=>{if(!stream){status.textContent='Camera not available.';return}if(rec&&rec.state==='recording'){rec.stop();document.getElementById('record').textContent='⏺ RECORD BATTLE';return}chunks=[];try{rec=new MediaRecorder(stream);rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};rec.onstop=()=>{let blob=new Blob(chunks,{type:'video/webm'});download.href=URL.createObjectURL(blob);download.download='make-me-laugh-battle.webm';download.style.display='block';status.textContent='🎬 Battle recorded — save it and share it.'};rec.start();document.getElementById('record').textContent='⏹ STOP RECORDING';status.textContent='🔴 Recording battle…'}catch(e){status.textContent='Recording is not supported on this browser.'}};
+</script>
+</body></html>
