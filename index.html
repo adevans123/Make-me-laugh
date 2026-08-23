@@ -71,5 +71,6 @@ function swap(){player=player==='A'?'B':'A';round++;document.getElementById('rou
 document.getElementById('swap').onclick=swap;
 document.getElementById('laugh').onclick=()=>{crack.style.display='flex';if(player==='A'){A++;document.getElementById('a').textContent=A}else{B++;document.getElementById('b').textContent=B}status.textContent='😂 Point awarded — swap turns!';setTimeout(swap,1000)};
 document.getElementById('record').onclick=async()=>{if(!stream){status.textContent='Camera not available.';return}if(rec&&rec.state==='recording'){rec.stop();document.getElementById('record').textContent='⏺ RECORD BATTLE';return}chunks=[];try{rec=new MediaRecorder(stream);rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};rec.onstop=()=>{let blob=new Blob(chunks,{type:'video/webm'});download.href=URL.createObjectURL(blob);download.download='make-me-laugh-battle.webm';download.style.display='block';status.textContent='🎬 Battle recorded — save it and share it.'};rec.start();document.getElementById('record').textContent='⏹ STOP RECORDING';status.textContent='🔴 Recording battle…'}catch(e){status.textContent='Recording is not supported on this browser.'}};
+  start();
 </script>
 </body></html>
