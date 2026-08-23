@@ -17,7 +17,9 @@ video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);background:#1
 .effect{position:absolute;inset:0;display:none;pointer-events:none}.fx{position:absolute;filter:drop-shadow(0 5px 5px #000b);font-family:"Apple Color Emoji","Segoe UI Emoji",sans-serif}
 .hat{font-size:86px;top:17%;left:50%;transform:translateX(-50%) rotate(-7deg)}.moustache{font-size:82px;top:47%;left:50%;transform:translateX(-50%)}.ears{font-size:100px;top:33%;left:1%}.ears.r{left:auto;right:1%}.beard{font-size:105px;top:49%;left:50%;transform:translateX(-50%)}.hair{font-size:105px;top:12%;left:50%;transform:translateX(-50%)}.old{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 17%,#eee5 18%,transparent 34%),linear-gradient(#aaa2,#5554);mix-blend-mode:screen}
 .crack{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:#ff315b33;font-size:55px;font-weight:1000;text-align:center;text-shadow:0 5px 14px #000}.live{position:absolute;right:12px;bottom:12px;background:#ff315b;border-radius:8px;padding:7px 9px;font-size:10px;font-weight:1000}
-.panel{margin-top:11px;background:#141418;border:1px solid #29292f;border-radius:20px;padding:12px}.lab{font-size:10px;color:#aaaab3;letter-spacing:1px;text-transform:uppercase;font-weight:900;margin-bottom:8px}
+ache{position:absolute;top:57%;left:50%;transform:translate(-50%,-50%);font-size:70px;z-index:20;pointer-events:none;display:none}
+.moustache:before,.moustache:after{content:"";position:absolute;top:5px;width:48px;height:25px;background:#17110e;border-radius:100% 0 100% 100%;box-shadow:inset 0 -3px 3px #000}
+.moustache:before{left:0;transform:rotate(18deg)}.moustache:after{right:0;transform:scaleX(-1) rotate(18deg)}.panel{margin-top:11px;background:#141418;border:1px solid #29292f;border-radius:20px;padding:12px}.lab{font-size:10px;color:#aaaab3;letter-spacing:1px;text-transform:uppercase;font-weight:900;margin-bottom:8px}
 .chips{display:flex;gap:7px;overflow:auto;padding-bottom:3px}.chip{border:1px solid #393940;background:#222229;color:#fff;border-radius:12px;padding:10px 11px;font-weight:900;white-space:nowrap}.chip.on{border-color:transparent;background:linear-gradient(135deg,#ff315b,#7c3aed)}
 input{width:100%;margin-top:9px;background:#0f0f12;border:1px solid #36363d;color:#fff;border-radius:12px;padding:12px;font-size:14px;outline:none}.row{display:flex;gap:7px;margin-top:8px}.btn{flex:1;border:0;border-radius:13px;color:#fff;padding:13px 7px;font-weight:1000}.go{background:#ff315b}.say{background:#2b2b31}.swap{background:#38383f}.record{background:#24242a}.status{text-align:center;color:#bcbcc5;font-size:11px;min-height:18px;margin-top:8px}
 .card{margin-top:11px;background:#141418;border:1px solid #29292f;border-radius:18px;padding:14px}.card strong{display:block;margin-bottom:4px}.card span{font-size:12px;color:#aaaab2;line-height:1.4}
@@ -29,6 +31,7 @@ input{width:100%;margin-top:9px;background:#0f0f12;border:1px solid #36363d;colo
 <div class="head"><div class="logo">MAKE ME <i>LAUGH</i> 😂</div><div class="badge">V3 · LIVE CAMERA</div></div>
 <div class="cam">
 <video id="video" autoplay muted playsinline></video><div class="shade"></div>
+<div class="moustache" id="moustache"></div>
 <div class="bar"><div class="pill">ROUND <span id="round">1</span></div><div class="pill">A <span id="a">0</span> · B <span id="b">0</span></div></div>
 <div class="turn" id="turn">A'S TURN — MAKE B LAUGH</div>
 <div class="words"><small>AI TRANSFORMATION</small><span id="phrase">Give them a huge moustache</span></div>
@@ -55,12 +58,15 @@ input{width:100%;margin-top:9px;background:#0f0f12;border:1px solid #36363d;colo
 <script>
 const v=document.getElementById('video'), status=document.getElementById('status'), effect=document.getElementById('effect'), phrase=document.getElementById('phrase'), custom=document.getElementById('custom'), crack=document.getElementById('crack'), download=document.getElementById('download');
 let fx='moustache',player='A',round=1,A=0,B=0,rec=null,chunks=[],stream=null,audioCtx=null,analyser=null;
+const moustache=document.getElementById('moustache');  
 async function start(){try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1080},height:{ideal:1920}},audio:true});v.srcObject=stream;status.textContent='Camera ready. Make them laugh.'}catch(e){status.textContent='Camera/mic permission needed for the full demo.'}}
 start();
 document.querySelectorAll('.chip').forEach(x=>x.onclick=()=>{document.querySelectorAll('.chip').forEach(y=>y.classList.remove('on'));x.classList.add('on');fx=x.dataset.fx;phrase.textContent=x.dataset.t;custom.value=''});
 custom.oninput=()=>{if(custom.value.trim()) phrase.textContent=custom.value.trim()};
 function chooseFromText(t){t=t.toLowerCase(); if(t.includes('moust')||t.includes('mustache'))return'moustache';if(t.includes('hat'))return'hat';if(t.includes('ear'))return'ears';if(t.includes('beard'))return'beard';if(t.includes('hair')||t.includes('mohawk'))return'hair';if(t.includes('old')||t.includes('90')||t.includes('80'))return'old';return fx}
-function transform(){if(custom.value.trim()){phrase.textContent=custom.value.trim();fx=chooseFromText(custom.value)}effect.style.display='block';effect.querySelectorAll('[data-fx]').forEach(x=>x.style.display='none');effect.querySelectorAll('[data-fx="'+fx+'"]').forEach(x=>x.style.display='block');status.textContent='✨ Transformation applied — DON’T LAUGH!'}
+function transform(){
+  moustache.style.display='block';
+  if(custom.value.trim()){phrase.textContent=custom.value.trim();fx=chooseFromText(custom.value)}effect.style.display='block';effect.querySelectorAll('[data-fx]').forEach(x=>x.style.display='none');effect.querySelectorAll('[data-fx="'+fx+'"]').forEach(x=>x.style.display='block');status.textContent='✨ Transformation applied — DON’T LAUGH!'}
 document.getElementById('transform').onclick=transform;
 document.getElementById('voice').onclick=()=>{const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){status.textContent='Voice input is not supported in this browser.';return}status.textContent='🎙️ Listening…';let r=new R();r.lang='en-GB';r.onresult=e=>{let t=e.results[0][0].transcript;custom.value=t;phrase.textContent=t;fx=chooseFromText(t);setTimeout(transform,250)};r.onerror=()=>status.textContent='Try saying it again.';r.start()};
 function swap(){player=player==='A'?'B':'A';round++;document.getElementById('round').textContent=round;document.getElementById('turn').textContent=player+"'S TURN — MAKE "+(player==='A'?'B':'A')+" LAUGH";effect.style.display='none';crack.style.display='none';status.textContent='New round. Your turn!'}
