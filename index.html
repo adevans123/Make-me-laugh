@@ -71,7 +71,14 @@ Make your opponent laugh by changing their face with ridiculous live effects.
 </div>
 </div>
 </div>
-
+<script>
+window.addEventListener("error", e => {
+  document.getElementById("status").textContent = "JS ERROR: " + e.message;
+});
+window.addEventListener("unhandledrejection", e => {
+  document.getElementById("status").textContent = "JS ERROR: " + e.reason;
+});
+</script>
 <script type="module">
 import { FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22";
 const {FaceLandmarker,FilesetResolver}=vision;
