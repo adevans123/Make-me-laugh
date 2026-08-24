@@ -98,7 +98,7 @@ status.textContent="📷 Camera live — make them laugh!";
 requestAnimationFrame(loop);
 }catch(e){
 console.error(e);
-status.textContent="Camera failed. Check browser camera permission.";
+status.textContent="Camera error: "+e.name+" - "+e.message;
 }
 }
 
