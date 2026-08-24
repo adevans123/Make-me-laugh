@@ -156,7 +156,7 @@ document.querySelectorAll(".chip").forEach(y=>y.classList.remove("on"));
 x.classList.add("on");fx=x.dataset.fx;phrase.textContent=x.dataset.t;custom.value="";
 });
 
-document.getElementById("start").onclick=startCamera;
+document.getElementById("start").onclick=()=>{status.textContent="BUTTON WORKS";startCamera();};
 
 document.getElementById("transform").onclick=()=>{
 if(custom.value.trim()){phrase.textContent=custom.value.trim();fx=choose(custom.value)}
