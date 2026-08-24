@@ -81,7 +81,9 @@ window.addEventListener("unhandledrejection", e => {
 </script>
 <script type="module">
 import { FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22";
-const {FaceLandmarker,FilesetResolver}=vision;
+import {FaceLandmarker, FilesetResolver} from "...vision_bundle.mjs";
+
+const vision = document.getElementById("video");
 
 const video=document.getElementById("video");
 const canvas=document.getElementById("overlay");
