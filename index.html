@@ -100,7 +100,7 @@ status.textContent="MODULE WORKS";
 async function startCamera(){
 try{
 status.textContent="Starting camera...";
-const visionFiles = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm");
+const visionFiles = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm");
 landmarker = await FaceLandmarker.createFromOptions(visionFiles,{baseOptions:{modelAssetPath:"https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",runningMode:"VIDEO",numFaces:2}});
 
 
