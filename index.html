@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>Make Me Laugh</title>
 <style>
 *{box-sizing:border-box}
@@ -12,7 +12,7 @@ body{margin:0;background:#09090b;color:#fff;font-family:Arial,Helvetica,sans-ser
 #video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1);background:#111}
 #overlay{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1);pointer-events:none}
 .cameraText{position:absolute;left:0;right:0;bottom:26px;text-align:center;z-index:5;text-shadow:0 2px 8px #000;padding:0 18px;pointer-events:none}
-.cameraText .small{font-size:13px;font-weight:800;letter-spacing:3px;opacity:.75}
+.cameraText .small{font-size:13px;font-weight:800;letter-spacing:3px;opacity:.78}
 .cameraText .big{margin-top:7px;font-size:clamp(22px,6vw,36px);line-height:1.08;font-weight:900}
 h2{font-size:20px;margin:22px 0 12px}
 .chips{display:flex;gap:9px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
@@ -27,12 +27,11 @@ input::placeholder{color:#85838a}
 .btn:disabled{opacity:.5}
 .status{text-align:center;margin:13px 0;color:#aaa;min-height:22px}
 .card{background:#151419;border:1px solid #29272e;border-radius:23px;padding:20px;margin-top:10px}
-.card strong{font-size:17px}
-.card p{line-height:1.5;color:#ddd;margin-bottom:0}
+.card strong{font-size:17px}.card p{line-height:1.5;color:#ddd;margin-bottom:0}
 #permission{display:none;position:absolute;inset:0;background:rgba(0,0,0,.78);z-index:10;align-items:center;justify-content:center;padding:25px;text-align:center}
 .permissionBox{background:#17171b;border:1px solid #333;border-radius:24px;padding:24px;max-width:420px}
-.permissionBox h3{margin-top:0;font-size:22px}
-.permissionBox p{color:#ccc;line-height:1.5}
+.permissionBox h3{margin-top:0;font-size:22px}.permissionBox p{color:#ccc;line-height:1.5}
+.aiNote{font-size:13px;color:#9b98a2;margin:9px 2px 0}
 </style>
 </head>
 <body>
@@ -55,57 +54,228 @@ input::placeholder{color:#85838a}
 
   <h2>What do you want to do to them?</h2>
   <div class="chips">
-    <button class="chip" data-effect="moustache">😎 Moustache</button>
-    <button class="chip" data-effect="hat">🎩 Hat</button>
-    <button class="chip" data-effect="ears">👂 Big ears</button>
-    <button class="chip active" data-effect="beard">🧔 Beard</button>
-    <button class="chip" data-effect="hair">💇 Hair</button>
-    <button class="chip" data-effect="glasses">🕶️ Glasses</button>
+    <button class="chip" data-effect="moustache">ðŸ˜Ž Moustache</button>
+    <button class="chip" data-effect="hat">ðŸŽ© Hat</button>
+    <button class="chip" data-effect="ears">ðŸ‘‚ Big ears</button>
+    <button class="chip active" data-effect="beard">ðŸ§” Beard</button>
+    <button class="chip" data-effect="hair">ðŸ’‡ Hair</button>
+    <button class="chip" data-effect="glasses">ðŸ•¶ï¸ Glasses</button>
   </div>
 
-  <input id="custom" type="text" placeholder='Or type "Give Dad a massive beard"'>
+  <input id="custom" type="text" placeholder='Try: "put a cat on his head"'>
+  <div class="aiNote">âœ¨ Type what you want. The built-in AI interpreter turns your words into live effects.</div>
 
   <div class="buttons">
-    <button class="btn primary" id="transform">✨ TRANSFORM</button>
-    <button class="btn" id="start">📸 START CAMERA</button>
-    <button class="btn" id="swap">↔ SWAP</button>
-    <button class="btn" id="laugh">😂 THEY LAUGHED</button>
+    <button class="btn primary" id="transform">âœ¨ TRANSFORM</button>
+    <button class="btn" id="start">ðŸ“¸ START CAMERA</button>
+    <button class="btn" id="swap">â†” SWAP</button>
+    <button class="btn" id="laugh">ðŸ˜‚ THEY LAUGHED</button>
   </div>
 
-  <div class="status" id="status">Camera ready — press START CAMERA</div>
+  <div class="status" id="status">Camera ready â€” press START CAMERA</div>
 
   <div class="card">
     <strong>FIRST PERSON TO LAUGH LOSES</strong>
-    <p>Make your opponent laugh by changing their face with ridiculous live effects.</p>
+    <p>Tell the AI what ridiculous change you want. It follows the face and keeps the effect attached while they move.</p>
   </div>
 </div>
 
 <script type="module">
-import {FaceLandmarker, FilesetResolver} from
-  "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/vision_bundle.mjs";
+import {FaceLandmarker,FilesetResolver} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/vision_bundle.mjs";
 
-const video=document.getElementById("video");
-const canvas=document.getElementById("overlay");
-const ctx=canvas.getContext("2d");
-const status=document.getElementById("status");
-const phrase=document.getElementById("phrase");
-const custom=document.getElementById("custom");
-const startButton=document.getElementById("start");
-const transformButton=document.getElementById("transform");
-const swapButton=document.getElementById("swap");
-const laughButton=document.getElementById("laugh");
-const permission=document.getElementById("permission");
-const permissionStart=document.getElementById("permissionStart");
+const video=document.getElementById("video"),canvas=document.getElementById("overlay"),ctx=canvas.getContext("2d");
+const status=document.getElementById("status"),phrase=document.getElementById("phrase"),custom=document.getElementById("custom");
+const startButton=document.getElementById("start"),transformButton=document.getElementById("transform"),swapButton=document.getElementById("swap");
+const laughButton=document.getElementById("laugh"),permission=document.getElementById("permission"),permissionStart=document.getElementById("permissionStart");
 
-let faceLandmarker=null;
-let stream=null;
-let running=false;
-let currentEffect="beard";
-let player="A";
-let lastVideoTime=-1;
-let trackingFailed=false;
+let faceLandmarker=null,stream=null,running=false,trackingFailed=false,lastVideoTime=-1;
+let activeEffects=["beard"],player="A";
 
-function setStatus(text){status.textContent=text}
+const EFFECT_NAMES={
+ beard:"a huge realistic beard",moustache:"a ridiculous huge moustache",hat:"a ridiculous giant hat",
+ ears:"massive ears",hair:"wild hair",glasses:"oversized sunglasses",nose:"a giant clown nose",
+ horns:"giant devil horns",alien:"huge alien eyes",brows:"massive eyebrows",bald:"a completely bald head",
+ pirate:"a pirate eye patch",cat:"a cat sitting on their head",crown:"a ridiculous golden crown",
+ rainbow:"wild rainbow hair",monocle:"a giant monocle"
+};
+
+function setStatus(t){status.textContent=t}
+function resizeCanvas(){
+  const dpr=devicePixelRatio||1,w=video.clientWidth||canvas.parentElement.clientWidth,h=video.clientHeight||canvas.parentElement.clientHeight;
+  canvas.width=Math.max(1,Math.round(w*dpr));canvas.height=Math.max(1,Math.round(h*dpr));
+  canvas.style.width=w+"px";canvas.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+addEventListener("resize",resizeCanvas);
+
+async function setupFaceTracking(){
+  if(faceLandmarker||trackingFailed)return;
+  setStatus("Loading face tracking...");
+  try{
+    const vision=await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm");
+    faceLandmarker=await FaceLandmarker.createFromOptions(vision,{
+      baseOptions:{
+        modelAssetPath:"https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+        delegate:"GPU"
+      },runningMode:"VIDEO",numFaces:2,
+      minFaceDetectionConfidence:.45,minFacePresenceConfidence:.45,minTrackingConfidence:.45
+    });
+    setStatus("AI face tracking ready");
+  }catch(e){console.warn(e);trackingFailed=true;setStatus("Camera live â€” basic AI effects ready")}
+}
+
+async function startCamera(){
+  if(running)return;
+  try{
+    setStatus("Starting camera...");permission.style.display="none";
+    if(!navigator.mediaDevices?.getUserMedia)throw new Error("Camera access is not supported in this browser.");
+    stream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:{ideal:"user"},width:{ideal:1280},height:{ideal:1280}},audio:false
+    });
+    video.srcObject=stream;await video.play();running=true;resizeCanvas();
+    startButton.textContent="ðŸŸ¢ CAMERA LIVE";setStatus("ðŸ“¸ Camera live â€” move your face around!");
+    requestAnimationFrame(loop);setupFaceTracking();
+  }catch(e){
+    console.error(e);setStatus("Camera error: "+(e.name||"Unknown")+" â€” "+(e.message||"Please allow camera access"));
+    permission.style.display="flex";
+  }
+}
+
+function point(lm,i,w,h){return{x:lm[i].x*w,y:lm[i].y*h}}
+function dist(a,b){return Math.hypot(b.x-a.x,b.y-a.y)}
+function ang(a,b){return Math.atan2(b.y-a.y,b.x-a.x)}
+function faceBox(lm,w,h){
+  const ids=[10,152,234,454],pts=ids.map(i=>point(lm,i,w,h)),xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);
+  return {left:Math.min(...xs),right:Math.max(...xs),top:Math.min(...ys),bottom:Math.max(...ys),cx:(Math.min(...xs)+Math.max(...xs))/2,cy:(Math.min(...ys)+Math.max(...ys))/2,fw:Math.max(1,Math.max(...xs)-Math.min(...xs)),fh:Math.max(1,Math.max(...ys)-Math.min(...ys))};
+}
+
+function drawMoustache(lm,w,h){
+  const l=point(lm,61,w,h),r=point(lm,291,w,h),c=point(lm,13,w,h),fw=dist(l,r),rot=ang(l,r),mw=fw*.82,mh=fw*.23;
+  ctx.save();ctx.translate(c.x,c.y-fw*.03);ctx.rotate(rot);
+  const g=ctx.createLinearGradient(0,-mh,0,mh);g.addColorStop(0,"#3b2a20");g.addColorStop(.5,"#080706");g.addColorStop(1,"#4a3325");ctx.fillStyle=g;
+  for(const s of[-1,1]){ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(s*mw*.15,-mh,s*mw*.42,-mh*.9,s*mw*.5,-mh*.2);ctx.bezierCurveTo(s*mw*.42,mh*.65,s*mw*.15,mh*.6,0,0);ctx.fill()}
+  ctx.restore();
+}
+function drawBeard(lm,w,h){
+  const l=point(lm,234,w,h),r=point(lm,454,w,h),chin=point(lm,152,w,h),fw=dist(l,r),bw=fw*.92;
+  ctx.save();ctx.translate((l.x+r.x)/2,chin.y-fw*.5);
+  const g=ctx.createLinearGradient(0,0,0,fw*1.05);g.addColorStop(0,"rgba(45,31,24,.86)");g.addColorStop(.5,"rgba(20,14,12,.95)");g.addColorStop(1,"rgba(7,6,5,.98)");ctx.fillStyle=g;
+  ctx.beginPath();ctx.moveTo(-bw*.47,fw*.08);ctx.bezierCurveTo(-bw*.5,fw*.4,-bw*.38,fw*.7,0,fw*1.02);ctx.bezierCurveTo(bw*.38,fw*.7,bw*.5,fw*.4,bw*.47,fw*.08);ctx.bezierCurveTo(bw*.25,fw*.2,-bw*.25,fw*.2,-bw*.47,fw*.08);ctx.fill();ctx.restore();
+}
+function drawGlasses(lm,w,h){
+  const l=point(lm,33,w,h),r=point(lm,263,w,h),n=point(lm,1,w,h),fw=dist(l,r),rot=ang(l,r),s=fw*.32;
+  ctx.save();ctx.translate(n.x,n.y-fw*.05);ctx.rotate(rot);ctx.strokeStyle="#050505";ctx.lineWidth=Math.max(3,fw*.035);ctx.fillStyle="rgba(20,30,40,.42)";
+  for(const x of[-fw*.16,fw*.16]){ctx.beginPath();ctx.roundRect(x-s/2,-s/2,s,s*.72,s*.15);ctx.fill();ctx.stroke()}
+  ctx.beginPath();ctx.moveTo(-fw*.02,0);ctx.lineTo(fw*.02,0);ctx.stroke();ctx.restore();
+}
+function drawHat(b){
+  const fw=b.fw;ctx.save();ctx.translate(b.cx,b.top-fw*.2);ctx.fillStyle="#17131a";
+  ctx.beginPath();ctx.ellipse(0,0,fw*.58,fw*.12,0,0,Math.PI*2);ctx.fill();ctx.fillRect(-fw*.32,-fw*.42,fw*.64,fw*.42);
+  ctx.fillStyle="#ff2856";ctx.fillRect(-fw*.34,-fw*.2,fw*.68,fw*.07);ctx.restore();
+}
+function drawEars(b){
+  const fw=b.fw;ctx.save();ctx.fillStyle="rgba(255,185,170,.92)";
+  ctx.beginPath();ctx.ellipse(b.left-fw*.08,b.cy,fw*.12,fw*.22,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(b.right+fw*.08,b.cy,fw*.12,fw*.22,0,0,Math.PI*2);ctx.fill();ctx.restore();
+}
+function drawHair(b,rainbow=false){
+  const fw=b.fw;ctx.save();ctx.beginPath();ctx.ellipse(b.cx,b.top-fw*.08,fw*.52,fw*.27,0,Math.PI,Math.PI*2);
+  if(rainbow){const g=ctx.createLinearGradient(b.left,0,b.right,0);["#ff2d55","#ffb000","#35d07f","#25a7ff","#a65cff"].forEach((c,i)=>g.addColorStop(i/4,c));ctx.fillStyle=g}
+  else ctx.fillStyle="rgba(25,18,15,.96)";ctx.fill();ctx.restore();
+}
+function drawNose(lm,w,h){
+  const n=point(lm,1,w,h),fw=dist(point(lm,234,w,h),point(lm,454,w,h)),r=fw*.14;
+  ctx.save();ctx.fillStyle="#ff3b30";ctx.strokeStyle="#8b0000";ctx.lineWidth=3;ctx.beginPath();ctx.arc(n.x,n.y+fw*.08,r,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore();
+}
+function drawHorns(b){
+  const fw=b.fw;ctx.save();ctx.fillStyle="#d7263d";
+  for(const s of[-1,1]){ctx.beginPath();ctx.moveTo(b.cx+s*fw*.3,b.top+fw*.05);ctx.quadraticCurveTo(b.cx+s*fw*.42,b.top-fw*.32,b.cx+s*fw*.17,b.top-fw*.2);ctx.closePath();ctx.fill()}ctx.restore();
+}
+function drawAlien(lm,w,h){
+  const l=point(lm,33,w,h),r=point(lm,263,w,h),fw=dist(l,r),y=(l.y+r.y)/2-fw*.02;
+  ctx.save();ctx.fillStyle="rgba(120,240,255,.45)";ctx.strokeStyle="#001c25";ctx.lineWidth=4;
+  for(const s of[-1,1]){ctx.beginPath();ctx.ellipse((l.x+r.x)/2+s*fw*.2,y,fw*.18,fw*.12,0,0,Math.PI*2);ctx.fill();ctx.stroke()}ctx.restore();
+}
+function drawBrows(lm,w,h){
+  const l=point(lm,70,w,h),r=point(lm,300,w,h),fw=dist(point(lm,234,w,h),point(lm,454,w,h));
+  ctx.save();ctx.strokeStyle="#2a160c";ctx.lineWidth=Math.max(8,fw*.06);ctx.lineCap="round";
+  ctx.beginPath();ctx.moveTo(l.x-fw*.07,l.y-fw*.04);ctx.quadraticCurveTo(l.x-fw*.18,l.y-fw*.12,l.x-fw*.27,l.y-fw*.02);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(r.x+fw*.07,r.y-fw*.04);ctx.quadraticCurveTo(r.x+fw*.18,r.y-fw*.12,r.x+fw*.27,r.y-fw*.02);ctx.stroke();ctx.restore();
+}
+function drawBald(b){
+  const fw=b.fw;ctx.save();ctx.fillStyle="rgba(230,210,195,.96)";ctx.beginPath();ctx.ellipse(b.cx,b.top-fw*.02,fw*.48,fw*.28,0,Math.PI,Math.PI*2);ctx.fill();ctx.restore();
+}
+function drawPatch(lm,w,h){
+  const e=point(lm,33,w,h),fw=dist(point(lm,234,w,h),point(lm,454,w,h));ctx.save();ctx.fillStyle="#111";ctx.beginPath();ctx.ellipse(e.x,e.y,fw*.13,fw*.11,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#8b5a2b";ctx.lineWidth=4;ctx.stroke();ctx.restore();
+}
+function drawCrown(b){
+  const fw=b.fw;ctx.save();ctx.fillStyle="#ffd43b";ctx.strokeStyle="#8b6500";ctx.lineWidth=3;ctx.beginPath();
+  ctx.moveTo(b.cx-fw*.38,b.top-fw*.05);ctx.lineTo(b.cx-fw*.3,b.top-fw*.32);ctx.lineTo(b.cx-fw*.1,b.top-fw*.12);ctx.lineTo(b.cx,b.top-fw*.38);ctx.lineTo(b.cx+fw*.1,b.top-fw*.12);ctx.lineTo(b.cx+fw*.3,b.top-fw*.32);ctx.lineTo(b.cx+fw*.38,b.top-fw*.05);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
+}
+function drawCat(b){
+  const fw=b.fw,x=b.cx,y=b.top-fw*.3,s=fw*.18;ctx.save();ctx.font=`${Math.round(s*1.8)}px serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("ðŸ±",x,y);ctx.restore();
+}
+function drawMonocle(lm,w,h){
+  const e=point(lm,263,w,h),fw=dist(point(lm,234,w,h),point(lm,454,w,h)),r=fw*.17;
+  ctx.save();ctx.strokeStyle="#ffd43b";ctx.lineWidth=Math.max(4,fw*.025);ctx.fillStyle="rgba(255,255,220,.18)";
+  ctx.beginPath();ctx.arc(e.x,e.y,r,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(e.x+r*.7,e.y+r*.7);ctx.lineTo(e.x+r*1.3,e.y+r*1.7);ctx.stroke();ctx.restore();
+}
+
+function drawEffect(name,lm,w,h){
+  const b=faceBox(lm,w,h);
+  if(name==="moustache")drawMoustache(lm,w,h);else if(name==="beard")drawBeard(lm,w,h);else if(name==="glasses")drawGlasses(lm,w,h);
+  else if(name==="hat")drawHat(b);else if(name==="ears")drawEars(b);else if(name==="hair")drawHair(b);else if(name==="rainbow")drawHair(b,true);
+  else if(name==="nose")drawNose(lm,w,h);else if(name==="horns")drawHorns(b);else if(name==="alien")drawAlien(lm,w,h);else if(name==="brows")drawBrows(lm,w,h);
+  else if(name==="bald")drawBald(b);else if(name==="pirate")drawPatch(lm,w,h);else if(name==="crown")drawCrown(b);else if(name==="cat")drawCat(b);else if(name==="monocle")drawMonocle(lm,w,h);
+}
+
+function interpretCommand(text){
+  const t=text.toLowerCase().replace(/[^\w\s'-]/g," "),found=[];
+  const rules=[
+    ["rainbow",["rainbow","multicolour","multi colour","colourful hair"]],["moustache",["moustache","mustache","handlebar"]],
+    ["beard",["beard","goatee","facial hair"]],["hat",["hat","top hat","cap","helmet","cowboy hat","ridiculous hat"]],
+    ["ears",["big ears","huge ears","massive ears","giant ears","elephant ears"]],["glasses",["glasses","sunglasses","shades","spectacles"]],
+    ["hair",["hair","mohawk","afro","crazy hair","wild hair"]],["nose",["clown nose","red nose","massive nose","big nose","giant nose"]],
+    ["horns",["horns","devil horns","demon horns"]],["alien",["alien eyes","alien","bug eyes","huge eyes","giant eyes"]],
+    ["brows",["eyebrows","bushy brows","massive eyebrows","huge eyebrows"]],["bald",["bald","no hair","shaved head"]],
+    ["pirate",["pirate","eye patch","eyepatch"]],["crown",["crown","king","queen"]],["cat",["cat on","cat on his head","cat on her head","cat on their head","cat"]],["monocle",["monocle"]]
+  ];
+  for(const [name,words] of rules)if(words.some(w=>t.includes(w))&&!found.includes(name))found.push(name);
+  if(!found.length){if(t.includes("funny")||t.includes("ridiculous")||t.includes("silly"))return ["nose","hat"];return ["beard"]}
+  return found.slice(0,4);
+}
+function labelEffects(effects){return effects.map(e=>EFFECT_NAMES[e]||e).join(" + ")}
+function applyCommand(text){
+  const effects=interpretCommand(text);activeEffects=effects;
+  document.querySelectorAll(".chip").forEach(b=>b.classList.toggle("active",effects.includes(b.dataset.effect)));
+  phrase.textContent=text.trim()?text.trim():labelEffects(effects);setStatus("âœ¨ AI understood: "+labelEffects(effects));
+}
+function chooseEffect(effect){
+  activeEffects=[effect];phrase.textContent="Give them "+(EFFECT_NAMES[effect]||effect);
+  document.querySelectorAll(".chip").forEach(b=>b.classList.toggle("active",b.dataset.effect===effect));setStatus("âœ¨ "+(EFFECT_NAMES[effect]||effect));
+}
+function loop(){
+  if(!running)return;
+  const w=video.clientWidth||canvas.parentElement.clientWidth,h=video.clientHeight||canvas.parentElement.clientHeight;
+  if(canvas.width!==Math.round(w*(devicePixelRatio||1)))resizeCanvas();ctx.clearRect(0,0,w,h);
+  if(faceLandmarker&&video.currentTime!==lastVideoTime){
+    lastVideoTime=video.currentTime;
+    try{
+      const result=faceLandmarker.detectForVideo(video,performance.now()),faces=result.faceLandmarks||[];
+      if(faces.length){const target=faces[player==="A"?0:Math.min(1,faces.length-1)];activeEffects.forEach(e=>drawEffect(e,target,w,h))}
+    }catch(e){console.warn(e)}
+  }
+  requestAnimationFrame(loop);
+}
+
+document.querySelectorAll(".chip").forEach(btn=>btn.addEventListener("click",()=>chooseEffect(btn.dataset.effect)));
+transformButton.addEventListener("click",()=>{const text=custom.value.trim();if(text)applyCommand(text);else{phrase.textContent="Give them "+labelEffects(activeEffects);setStatus("âœ¨ Transformation applied!")}});custom.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();transformButton.click()}});
+startButton.addEventListener("click",()=>running?setStatus("ðŸŸ¢ Camera already live"):startCamera());permissionStart.addEventListener("click",startCamera);
+swapButton.addEventListener("click",()=>{player=player==="A"?"B":"A";setStatus("â†” Swapped target â€” Player "+player)});
+laughButton.addEventListener("click",()=>{setStatus("ðŸ˜‚ THEY LAUGHED! Player "+player+" loses!");phrase.textContent="ðŸ˜‚ THEY LAUGHED!";setTimeout(()=>phrase.textContent=custom.value.trim()||"Give them "+labelEffects(activeEffects),1800)});
+window.addEventListener("load",()=>{setTimeout(()=>{if(!running)setStatus("Camera ready â€” press START CAMERA")},200)});
+</script>
+</body>
+</html>function setStatus(text){status.textContent=text}
 
 async function setupFaceTracking(){
   if(faceLandmarker || trackingFailed) return;
