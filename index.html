@@ -137,7 +137,7 @@ ctx.fillText(t,0,0);ctx.restore();
 function drawFace(lm,w,h){
 const l=point(lm,234,w,h),r=point(lm,454,w,h),mouth=point(lm,13,w,h),chin=point(lm,152,w,h),fore=point(lm,10,w,h);
 const fw=Math.hypot(r.x-l.x,r.y-l.y),ang=Math.atan2(r.y-l.y,r.x-l.x);
-if(fx==="moustache"){ctx.save();ctx.translate(mouth.x,mouth.y+fw*0.04);ctx.rotate(ang);ctx.fillStyle="#171717";ctx.beginPath();ctx.ellipse(-fw*0.11,0,fw*0.14,fw*0.055,0,0,Math.PI*2);ctx.ellipse(fw*0.11,0,fw*0.14,fw*0.055,0,0,Math.PI*2);ctx.fill();ctx.restore();}
+if(fx==="moustache"){ctx.save();ctx.translate(mouth.x,mouth.y-fw*0.07);ctx.rotate(ang);ctx.fillStyle="#171717";ctx.beginPath();ctx.ellipse(-fw*0.11,0,fw*0.14,fw*0.055,0,0,Math.PI*2);ctx.ellipse(fw*0.11,0,fw*0.14,fw*0.055,0,0,Math.PI*2);ctx.fill();ctx.restore();}
 if(fx==="beard")emoji("🧔",chin.x,chin.y-fw*.16,fw*.48,ang);
 if(fx==="hat")emoji("🎩",fore.x,fore.y-fw*.16,fw*.48,ang);
 if(fx==="hair")emoji("🦱",fore.x,fore.y-fw*.05,fw*.52,ang);
