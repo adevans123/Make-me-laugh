@@ -101,7 +101,7 @@ async function startCamera(){
 try{
 status.textContent="Starting camera...";
 const visionFiles = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm");
-const landmarker = await FaceLandmarker.createFromOptions(visionFiles,{runningMode:"VIDEO",baseOptions:{modelAssetPath:"https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task"}});
+landmarker = await FaceLandmarker.createFromOptions(visionFiles,{runningMode:"VIDEO",baseOptions:{modelAssetPath:"https://storage.googleapis.com/...
 
 
 stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:false});
@@ -148,7 +148,7 @@ function loop(){
 if(!active)return;
 const w=video.clientWidth,h=video.clientHeight;
 if(video.currentTime!==last){
-const result = await landmarker.detectForVideo(video, performance.now());
+const result=landmarker.detectForVideo(video,performance.now());
 ctx.clearRect(0,0,w,h);
 (result.faceLandmarks||[]).forEach(f=>drawFace(f,w,h));
 last=video.currentTime;
