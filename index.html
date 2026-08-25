@@ -81,7 +81,8 @@ window.addEventListener("unhandledrejection", e => {
 </script>
 <script type="module">
 
-import {FaceLandmarker, FilesetResolver} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/vision_bundle.mjs";
+import vision from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/vision_bundle.mjs";
+const { FaceLandmarker, FilesetResolver } = vision;
 
 
 
