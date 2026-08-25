@@ -148,7 +148,7 @@ function loop(){
 if(!active)return;
 const w=video.clientWidth,h=video.clientHeight;
 if(video.currentTime!==last){
-const result=landmarker.detectForVideo(video,performance.now());
+const result = await landmarker.detectForVideo(video, performance.now());
 ctx.clearRect(0,0,w,h);
 (result.faceLandmarks||[]).forEach(f=>drawFace(f,w,h));
 last=video.currentTime;
