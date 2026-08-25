@@ -91,7 +91,7 @@ const ctx=canvas.getContext("2d");
 const status=document.getElementById("status");
 const phrase=document.getElementById("phrase");
 const custom=document.getElementById("custom");
-  document.getElementById("start").addEventListener("click", startCamera);
+  document.getElementById("start").onclick = () => { status.textContent = "BUTTON WORKS"; startCamera(); };
 
 let landmarker,stream,fx="moustache",player="A",round=1,A=0,B=0,active=false,last=-1;
 status.textContent="MODULE WORKS";
